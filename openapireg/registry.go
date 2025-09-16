@@ -1,4 +1,7 @@
-package oasregistry
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 2025 sibber (GitHub: sibber5)
+
+package openapireg
 
 import (
 	"fmt"
@@ -58,11 +61,11 @@ func New(info *openapi3.Info, opts ...RegistryOption) *Registry {
 	return r
 }
 
-// BuildSpec builds the registry and returns the (always non nil) generated OpenAPI spec.
-// You can marshal the returned spec to JSON or YAML with .MarshalJSON() or .MarshalYAML() and serve it.
+// BuildDoc builds the registry and returns the (always non nil) generated OpenAPI document.
+// You can marshal the returned doc to JSON or YAML with .MarshalJSON() or .MarshalYAML() and serve it.
 //
-// After BuildSpec is called the Registry is considered consumed and should not be used anymore, otherwise it will panic.
-func (r *Registry) BuildSpec() *openapi3.T {
+// After BuildDoc is called the Registry is considered consumed and should not be used anymore, otherwise it will panic.
+func (r *Registry) BuildDoc() *openapi3.T {
 	if r == nil {
 		panic("nil registry")
 	}
