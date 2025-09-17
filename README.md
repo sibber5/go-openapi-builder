@@ -1,6 +1,14 @@
-# openapireg
+# go-openapi-builder
 
-A fluent helper to build OpenAPI v3 documents for web APIs. This is still a work in progress, no stable release.
+A fluent helper to build OpenAPI v3 documents for Go web APIs.
+
+> **Status:** Work in progress, no stable release yet.
+
+## Installation
+
+```sh
+go get github.com/sibber5/go-openapi-builder/openapireg
+```
 
 ## Usage
 
@@ -16,18 +24,20 @@ reg := openapireg.New(&openapi3.Info{
 }, openapireg.WithSchemaKeyPrefixesToRemove("Contracts"))
 
 reg.AddEndpoint(http.MethodGet, "/users/{userId}").
-	WithSummary("Get user").
+	WithSummary("Get user by ID").
 	WithTags("users").
 	WithResponseWithContent(http.StatusOK, "The user with the specified ID.", reflect.TypeFor[UserDTO]()).
 	WithResponse(http.StatusNotFound, "No user with the specified ID exists.")
 ```
-And serve it:
+
+### Serving the OpenAPI Document
+
 ```go
 // example for serving with chi
 doc, err := reg.BuildDoc().MarshalJSON()
 r.Get("/openapi.json", func(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to generate OpenAPI doc: %s", err.Error()), http.StatusInternalServerError)
+		http.Error(w, "Failed to generate OpenAPI doc: %s"+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
